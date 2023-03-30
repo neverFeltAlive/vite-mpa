@@ -33,7 +33,7 @@ const getConfigFromFile = async () => {
   const filePath = resolve(rootDirName, 'pagesconfig.json');
   readFile(filePath, 'utf8', (err, data) => {
     if (!err){
-      indexPageConfigValue = data.enableIndexPage;
+      indexPageConfigValue = JSON.parse(data).enableIndexPage;
     }
   })
 }
