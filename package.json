@@ -1,0 +1,29 @@
+{
+  "name": "vite-mpa",
+  "version": "1.0.1",
+  "description": "A plugin which makes working with mpa projects easier in vite",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vite",
+    "nodejs",
+    "javascript",
+    "mpa"
+  ],
+  "author": "neverfeltalive",
+  "license": "ISC",
+  "dependencies": {
+    "nodejs-logger-n": "^1.0.0"
+  },
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "devDependencies": {
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "prettier": "^2.8.7"
+  }
+}
