@@ -16,5 +16,5 @@
     "no-debugger": "error",
     "camelcase": "warn",
     "no-var": "error"
-  },
+  }
 }
