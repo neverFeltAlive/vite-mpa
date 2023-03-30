@@ -1,9 +1,5 @@
 {
-  "plugins": [
-    "pug"
-  ],
   "env": {
-    "browser": true,
     "es2021": true,
     "node": true,
     "es6": true
@@ -21,5 +17,4 @@
     "camelcase": "warn",
     "no-var": "error"
   },
-  "ignorePatterns": ["plugins/*/**"]
 }
