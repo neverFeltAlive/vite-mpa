@@ -20,9 +20,9 @@
     "README.md"
   ],
   "devDependencies": {
-    "nodejs-logger-n": "^1.0.0",
     "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.8.0",
+    "nodejs-logger-n": "^1.0.2",
     "prettier": "^2.8.7"
   }
 }
