@@ -1,7 +1,10 @@
-import { readdir, readdirSync, writeFile, readFile } from 'fs';
+import { promises, readdirSync, writeFile, readFile } from 'fs';
 import { join, resolve } from 'path';
-
 import { logError, logSuccess, logTitle } from 'nodejs-logger-n';
+
+import * as url from 'url';
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 let pluginConfig = {};
 let indexPageConfigValue = true;
@@ -12,7 +15,7 @@ let indexPageConfigValue = true;
  * @returns {Promise<*|undefined>}
  */
 const findConfig = async (dir=__dirname) => {
-  let ls = await readdir(dir);
+  let ls = await promises.readdir(dir);
   if(ls.includes('node_modules'))
     return dir;
   else if(dir == '/')
