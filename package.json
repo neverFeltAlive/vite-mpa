@@ -1,11 +1,12 @@
 {
   "name": "vite-mpa",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A plugin which makes working with mpa projects easier in vite",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
   "keywords": [
     "vite",
     "nodejs",
