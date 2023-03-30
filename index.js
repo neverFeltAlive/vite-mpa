@@ -1,8 +1,9 @@
-import { promises, readdirSync, writeFile, readFile } from 'fs';
+import { readdirSync, writeFile, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { logError, logSuccess, logTitle } from 'nodejs-logger-n';
 
 import * as url from 'url';
+
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -14,8 +15,8 @@ let indexPageConfigValue = true;
  * @param dir
  * @returns {Promise<*|undefined>}
  */
-const findConfig = async (dir=__dirname) => {
-  let ls = await promises.readdir(dir);
+const findConfig = (dir=__dirname) => {
+  let ls = readdirSync(dir);
   if(ls.includes('node_modules'))
     return dir;
   else if(dir == '/')
@@ -28,14 +29,11 @@ const findConfig = async (dir=__dirname) => {
  * Read config file
  * @returns {Promise<void>}
  */
-const getConfigFromFile = async () => {
-  const rootDirName = await findConfig();
+const getConfigFromFile = () => {
+  const rootDirName = findConfig();
   const filePath = resolve(rootDirName, 'pagesconfig.json');
-  readFile(filePath, 'utf8', (err, data) => {
-    if (!err){
-      indexPageConfigValue = JSON.parse(data).enableIndexPage;
-    }
-  })
+  const data = readFileSync(filePath, 'utf8');
+  indexPageConfigValue = JSON.parse(data).enableIndexPage;
 }
 
 /**
@@ -69,10 +67,10 @@ const getPages = (function () {
 /**
  * Gets all pages for the project
  */
-export async function getRollupInput(config, isDev = false) {
+export function getRollupInput(config, isDev = false) {
   // Get config
   pluginConfig = config;
-  await getConfigFromFile();
+  getConfigFromFile();
   pluginConfig.enableIndexPage = pluginConfig.enableIndexPage === undefined ? indexPageConfigValue : pluginConfig.enableIndexPage;
 
   // Generate JSON file
