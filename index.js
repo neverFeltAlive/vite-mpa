@@ -124,9 +124,11 @@ function generatePagesJSON() {
  * Vite plugin used to restructure folders after building
  * @return {{closeBundle(): void}}
  */
-export default function vitePluginMPA() {
+export default function vitePluginMPA(isDev = true) {
   return {
     closeBundle() {
+      if (isDev) return;
+
       console.log();
       logTitle('Restructuring Dist folder');
 
