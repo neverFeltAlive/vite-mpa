@@ -1,10 +1,9 @@
-import { readdirSync, writeFile, readFileSync } from 'fs';
+import { readdirSync, writeFile, readFileSync, rename, rmdirSync } from 'fs';
 import { join, resolve } from 'path';
-import { logError, logSuccess, logTitle } from 'nodejs-logger-n';
+import {logError, logSuccess, logTitle, logWarning} from 'nodejs-logger-n';
 
 import * as url from 'url';
 
-const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 let pluginConfig = {};
@@ -13,7 +12,7 @@ let indexPageConfigValue = true;
 /**
  * Finds project root folder
  * @param dir
- * @returns {Promise<*|undefined>}
+ * @returns {string}
  */
 const findConfig = (dir=__dirname) => {
   let ls = readdirSync(dir);
@@ -23,7 +22,7 @@ const findConfig = (dir=__dirname) => {
     throw new Error(`Could not find project root`);
   else
     return findConfig(resolve(dir,'..'));
-}
+};
 
 /**
  * Read config file
@@ -34,7 +33,7 @@ const getConfigFromFile = () => {
   const filePath = resolve(rootDirName, 'pagesconfig.json');
   const data = readFileSync(filePath, 'utf8');
   indexPageConfigValue = JSON.parse(data).enableIndexPage;
-}
+};
 
 /**
  * Gets all pages based on project structure.
@@ -119,4 +118,47 @@ function generatePagesJSON() {
     console.log();
     //endregion
   });
+}
+
+/**
+ * Vite plugin used to restructure folders after building
+ * @return {{closeBundle(): void}}
+ */
+export default function vitePluginMPA() {
+  return {
+    closeBundle() {
+      console.log();
+      logTitle('Restructuring Dist folder');
+
+      const rootPath = process.cwd();
+      const distPath = resolve(rootPath, 'dist');
+      const distFolder = readdirSync(distPath);
+
+      if (distFolder.includes('pages')) {
+        const pagesPath = resolve(distPath, 'pages');
+        const pagesFolder = readdirSync(pagesPath);
+
+        pagesFolder.forEach((dirName) => {
+          const currentFolder = readdirSync(resolve(pagesPath, dirName));
+          if (currentFolder.includes('index.html')) {
+            rename(join(pagesPath, dirName, 'index.html'), join(pagesPath, `${dirName}.html`), (error) => {
+              if (error) {
+                logWarning(`Failed to restructure page ${dirName}`);
+                console.error(error);
+              } else {
+                rmdirSync(join(pagesPath, dirName));
+              }
+            });
+          } else {
+            logWarning(`Failed to restructure page ${dirName}: No index file was found`);
+          }
+        });
+
+        logSuccess('Finished restructuring Dist folder');
+      } else {
+        logWarning('Failed to restructure pages: No pages folder was found');
+      }
+      console.log();
+    },
+  };
 }
