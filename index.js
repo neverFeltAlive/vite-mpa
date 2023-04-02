@@ -19,7 +19,7 @@ const findConfig = (dir=__dirname) => {
   let ls = readdirSync(dir);
   if(ls.includes('node_modules'))
     return dir;
-  else if(dir == '/')
+  else if(dir === resolve('/'))
     throw new Error(`Could not find project root`);
   else
     return findConfig(resolve(dir,'..'));
@@ -56,7 +56,7 @@ const getPages = (function () {
         indexFile &&
           pages.push({
             name: dir.name,
-            src: `/${dir.name}/`,
+            src: `/pages/${dir.name}/`,
             path: resolve(pluginConfig.pagesDir, dir.name, indexFile),
           });
       });

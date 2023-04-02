@@ -1,6 +1,6 @@
 {
   "name": "vite-mpa",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A plugin which makes working with mpa projects easier in vite",
   "main": "index.js",
   "scripts": {
