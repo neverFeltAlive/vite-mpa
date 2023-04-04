@@ -105,7 +105,7 @@ function generatePagesJSON() {
   });
 
   // Write to file
-  writeFile(`${pluginConfig.root}/pages.json`, JSON.stringify(json), 'utf8', (errors) => {
+  writeFile(`${pluginConfig.root}/pages/pages.json`, JSON.stringify(json), 'utf8', (errors) => {
     //region Logs
     console.log();
     logTitle('Pages Configuration');
